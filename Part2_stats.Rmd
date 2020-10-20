@@ -1,0 +1,61 @@
+---
+title: "Part 2"
+author: "Ayush Kumar"
+date: "20/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Basic Inferential Data Analysis-We are going to analyze the ToothGrowth data in the R datasets package.
+
+##Q1 Load the ToothGrowth data and perform some basic exploratory data analyses
+
+```{r}
+library(ggplot2)
+data(ToothGrowth)
+str(ToothGrowth)
+head(ToothGrowth)
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
+str(ToothGrowth)
+qplot(dose, len, data=ToothGrowth, facets=.~supp, geom=c("point", "smooth"), method="loess")
+```
+
+
+##Q2 Provide a basic summary of the data.
+```{r}
+summary(ToothGrowth)
+ggplot(aes(x=dose, y=len), data=ToothGrowth) + geom_boxplot(aes(fill=dose))
+ggplot(aes(x=supp, y=len), data=ToothGrowth) + geom_boxplot(aes(fill=supp))
+
+```
+
+
+##Q3 Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose.
+
+```{r setup, include=FALSE}
+varsupp <- ToothGrowth$supp
+vardose <- ToothGrowth$dose
+varlen <-  ToothGrowth$len
+```
+
+```{r setup, include=FALSE}
+t.test(varlen[varsupp == "VC"],varlen[varsupp == "OJ"], paired=FALSE)
+t.test(varlen[vardose == 0.5],varlen[vardose == 1], paired=FALSE)
+```
+
+##Q4 State your conclusions and the assumptions needed for your conclusions.
+
+
+Conclusion-
+
+1. For guiena pigs Vitamin c is a factor of growth for their teeth.
+2. Whereas the delivery mode does not have any imapact on their growth.
+
+Assumption-
+
+1.We assume that variance in all groups should be expected to be equal.
+2.The underlying assumption is that sampling of Guinea Pigs to assign them to a supplement and a dose was done properly.
+

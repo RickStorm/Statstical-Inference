@@ -1,0 +1,106 @@
+---
+title: "StasticalP1"
+author: "Ayush Kumar"
+date: "20/10/2020"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r LoadingData, include=FALSE}
+library(data.table)
+library(ggplot2)
+library(knitr)
+opts_chunk$set(echo = TRUE, results = 'hold')
+```
+
+##Assigning Values
+
+```{r Values}
+set.seed(120)
+expnum <- 40 
+lambda <- 0.2 
+simnum <- 1000
+expsimu <- replicate(simnum, rexp(expnum, lambda)) 
+expmean <- apply(expsimu, 2, mean)
+```
+
+
+##Q1 Show the sample mean and compare it to the theoretical mean of the distribution.
+
+```{r}
+analytic_mean<-mean(expmean)
+analytic_mean
+
+```
+
+```{r}
+theoretical_mean<-1/lambda
+theoretical_mean
+```
+
+```{r}
+analytic_mean-theoretical_mean
+```
+
+```{r}
+hist(expmean, xlab = "mean", main = "Exponential Function Simulations")
+abline(v = analytic_mean, col = "green")
+abline(v = theoretical_mean, col = "yellow")
+
+```
+
+The analytics mean is 4.993867 wheras the theoretical mean is 5 showing that average centre of distribution is very close to theoretical centre of distribution.
+
+
+##Q2 Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
+
+```{r}
+theoreticl_variance<-(theoretical_mean)^2/expnum
+theoreticl_variance
+```
+
+```{r}
+sqrt_expnum<-sqrt(expnum)
+theoretical_sd<-theoretical_mean/sqrt_expnum
+theoretical_sd
+
+```
+
+```{r}
+sampleVariance<- var(analytic_mean)
+sampleVariance
+```
+
+```{r}
+standard_deviation<-sd(expmean)
+standard_deviation
+```
+
+```{r}
+variance_distribution<-standard_deviation^2
+variance_distribution
+```
+
+We could see that variance_distribution is same as sample_variance.
+
+Theoretical Standard Deviation is 0.7905694.
+Standard Deviation is 0.7865754.
+
+##Q3 Show that the distribution is approximately normal.
+
+```{r}
+hist(expmean,  xlab="Mean for each trial", ylab = "Density", main="Sample Means Distribution", breaks=expnum, prob=TRUE)
+lines(density(expmean))
+abline(v = 1/lambda, col = "blue")
+```
+
+
+```{r}
+qqnorm(expmean)
+qqline(expmean, col = 2)
+```
+
+The above graph show a curve like structure(bell curve) and hence we could say that the distribution of 40 averages exponential is close to normal distribution.
